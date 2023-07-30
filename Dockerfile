@@ -47,8 +47,9 @@ RUN apk add --no-cache -t build-dependencies \
  && apk del build-dependencies \
  && rm -rf /root/.cache
 
-COPY --chown=searxng:searxng dockerfiles ./dockerfiles
-COPY --chown=searxng:searxng searx ./searx
+RUN apk add --no-cache git \
+    && git clone https://github.com/daetalys/searxng.git . \
+    && git checkout master
 
 ARG TIMESTAMP_SETTINGS=0
 ARG TIMESTAMP_UWSGI=0
@@ -78,11 +79,11 @@ LABEL maintainer="searxng <${GIT_URL}>" \
       org.label-schema.vcs-ref=${LABEL_VCS_REF} \
       org.label-schema.vcs-url=${LABEL_VCS_URL} \
       org.label-schema.build-date="${LABEL_DATE}" \
-      org.label-schema.usage="https://github.com/searxng/searxng-docker" \
+      org.label-schema.usage="https://github.com/daetalys/searxng-docker" \
       org.opencontainers.image.title="searxng" \
       org.opencontainers.image.version="${SEARXNG_DOCKER_TAG}" \
       org.opencontainers.image.url="${LABEL_VCS_URL}" \
       org.opencontainers.image.revision=${LABEL_VCS_REF} \
       org.opencontainers.image.source=${LABEL_VCS_URL} \
       org.opencontainers.image.created="${LABEL_DATE}" \
-      org.opencontainers.image.documentation="https://github.com/searxng/searxng-docker"
+      org.opencontainers.image.documentation="https://github.com/daetalys/searxng-docker"
